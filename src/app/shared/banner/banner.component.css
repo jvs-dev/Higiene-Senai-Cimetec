@@ -1,0 +1,34 @@
+
+
+.banner-container {
+  width: 100%;
+  min-height: 200px; 
+  max-height: 400px; 
+  overflow: hidden;
+  display: flex;
+  align-items: center; 
+  justify-content: center; 
+}
+
+.banner-container img {
+  width: 100%;
+  height: 100%; 
+  object-fit: cover; 
+  object-position: 5% center; 
+}
+
+
+
+@media (max-width: 768px) { 
+  .banner-container {
+    min-height: 150px; 
+    max-height: 250px; 
+  }
+}
+
+@media (max-width: 480px) { 
+  .banner-container {
+
+    height: 250px;
+  }
+}

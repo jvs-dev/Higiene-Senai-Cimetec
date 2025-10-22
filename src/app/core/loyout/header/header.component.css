@@ -1,0 +1,64 @@
+.header-container {
+  background-color: var(--color-b1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6rem;
+  width: 100%;
+  padding-inline: 2rem;
+}
+
+.header-logo img {
+  height: 60px; 
+  display: block; 
+}
+
+.header-login-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; 
+  background-color: transparent;
+  border: 2px solid var(--w3);
+  color: var(--w1);
+  padding: 0.8rem 1rem;
+  border-radius: 6px; 
+  cursor: pointer;
+  text-decoration: none; 
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+.header-login-btn i{
+  font-size: 1rem;
+}
+
+.header-login-btn:hover {
+  background-color: var(--w1);  
+  color: var(--color-b1);
+}
+
+
+@media (max-width: 600px) {
+
+  .header-container {
+    padding-inline: 1rem; 
+  }
+
+  .header-logo img {
+    height: 48px;      
+  }
+
+  .header-login-btn .login-text {
+    display: none;
+  }
+
+  .header-login-btn {
+    gap: 0;            
+    padding: 0.6rem 0.8rem; 
+  }
+
+  .header-login-btn .fa-user {
+    font-size: 1.1rem;
+  }
+
+}

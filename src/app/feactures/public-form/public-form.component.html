@@ -1,0 +1,55 @@
+<app-banner></app-banner>
+
+<div class="wrapper">
+  <h1>Solicitação Sanitarios Senai Cimatec</h1>
+
+  <form formGroup="publicForm" action="" class="form-user">
+    <div class="form-item">
+      <label for="ra">Informe seu RA <span class="required">*</span></label>
+      <input formControlName="userRa" id="ra" type="number" placeholder="Ex: 000.000000" />
+      @if (publicForm.controls['userRa'].invalid && (publicForm.controls['userRa'].touched || 
+      publicForm.controls['userRa'].dirty )) 
+      {
+
+      }
+    </div>
+
+    <div class="form-row">
+      <div class="form-item">
+        <label for="andar">Andar/Predio <span class="required">*</span></label>
+        <input formControlName="andarPredio" id="andar" type="text" placeholder="Ex: cimatec 1, andar 2" />
+      </div>
+      <div class="form-item">
+        <label for="banheiros">Banheiro <span class="required">*</span></label>
+        <select formControlName="banheiro" name="banheiros" id="banheiros">
+          <option value="" >Selecione o banheiro</option>
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="checkbox-group">
+      <label class="title">Itens em falta/problemas <span class="required">*</span></label>
+      <div class="checkbox-columns">
+        <div class="column">
+          <label><input type="checkbox" name="problemas" value="papel-higienico"> Papel higiênico</label>
+          <label><input type="checkbox" name="problemas" value="papel-toalha"> Papel toalha</label>
+          <label><input type="checkbox" name="problemas" value="sabonete"> Sabonete de mão</label>
+        </div>
+        <div class="column">
+          <label><input type="checkbox" name="problemas" value="banheiro-sujo"> Banheiro sujo</label>
+          <label><input type="checkbox" name="problemas" value="lixeira"> Lixeira cheia</label>
+          <label><input type="checkbox" name="problemas" value="outros"> Outros problemas (Descreva abaixo)</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-item">
+      <label for="obs">Observações adicionais</label>
+      <textarea id="obs" placeholder="Descreva aqui quaisquer problemas ou informações adicionais..." rows="5"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Enviar Solicitação</button>
+  </form>
+</div>

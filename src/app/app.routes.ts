@@ -1,0 +1,21 @@
+import { Routes } from '@angular/router';
+import { LoyoutComponent } from './core/loyout/loyout.component';
+import { LoginComponent } from './feactures/auth/login/login.component';
+import { PublicFormComponent } from './feactures/public-form/public-form.component';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: LoyoutComponent,
+    children: [
+      {
+        path: '',
+        component: PublicFormComponent
+      }
+    ]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  }
+];

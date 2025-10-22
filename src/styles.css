@@ -1,0 +1,103 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter+Display:wght@400;600;700&display=swap');
+
+
+
+:root {
+    --color-background: #f3f6fb;
+    --color-b1: #0874F7;
+    --color-b2: #529AF0;
+    --color-b3: #77ACED;
+    --color-b4: #74A0D7;
+    --color-b5: #7C9ABF;
+    --color-b6: #8EA2B9;
+    --color-b7: #8A99AA;
+    --color-b8: #7A8189;
+    --color-b9: #646668;
+
+    --black: #000000;
+    --w1: #FFFFFF;
+    --w2: #F8FAFC;
+    --w3: #E2EEF9;
+
+    --g1: #5C708A;
+    --g2: #8297B2;
+    --g3: #B4C4D9;
+    --g4: #D8E4F3;
+
+
+    --font-primary: 'InterDisplay', Helvetica, Arial, sans-serif;
+
+}
+
+
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+li {
+    list-style: none;
+}
+
+
+input,
+select,
+button {
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    height: auto;
+}
+
+input,
+select,
+button {
+    background: none;
+    border: none;
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+input,
+select {
+    width: 100%;
+    outline: none;
+}
+
+address {
+    font-style: normal;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+html{
+    font-family: var(--font-primary, Inter),sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    max-width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-background);
+}
+ 
+
