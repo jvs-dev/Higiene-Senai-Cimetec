@@ -3,14 +3,20 @@
 <div class="wrapper">
   <h1>Solicitação Sanitarios Senai Cimatec</h1>
 
-  <form formGroup="publicForm" action="" class="form-user">
+  <form [formGroup]="publicForm" (submit)="onSubmit()" class="form-user">
     <div class="form-item">
       <label for="ra">Informe seu RA <span class="required">*</span></label>
-      <input formControlName="userRa" id="ra" type="number" placeholder="Ex: 000.000000" />
-      @if (publicForm.controls['userRa'].invalid && (publicForm.controls['userRa'].touched || 
-      publicForm.controls['userRa'].dirty )) 
+      <input formControlName="userRa" id="ra" type="text" inputmode="numeric" placeholder="Ex: 000.000000" />
+      @if (userRa?.invalid && (userRa?.touched || userRa?.dirty ))
       {
-
+      <small class="erro">
+        @if (userRa?.hasError('required')) {
+        O campo RA é obrigatorio
+        }
+        @if (userRa?.hasError('pattern')) {
+        Formato de RA inválido. Use o formato: 000.000000
+        }
+      </small>
       }
     </div>
 
@@ -18,36 +24,58 @@
       <div class="form-item">
         <label for="andar">Andar/Predio <span class="required">*</span></label>
         <input formControlName="andarPredio" id="andar" type="text" placeholder="Ex: cimatec 1, andar 2" />
+        @if (andarPredio?.invalid && (andarPredio?.touched || andarPredio?.dirty ))
+        {
+        <small class="erro">
+          @if (andarPredio?.hasError('required')) {
+          Por favor, informe o andar e o prédio.
+          }
+        </small>
+        }
       </div>
       <div class="form-item">
         <label for="banheiros">Banheiro <span class="required">*</span></label>
         <select formControlName="banheiro" name="banheiros" id="banheiros">
-          <option value="" >Selecione o banheiro</option>
+          <option value="">Selecione o banheiro</option>
           <option value="masculino">Masculino</option>
           <option value="feminino">Feminino</option>
         </select>
+        @if (banheiro?.invalid && (banheiro?.touched || banheiro?.dirty ))
+        {
+        <small class="erro">
+          @if (banheiro?.hasError('required')) {
+          Selecione o tipo de banheiro.
+          }
+        </small>
+        }
       </div>
     </div>
 
-    <div class="checkbox-group">
+    <div class="checkbox-group" formGroupName="problems">
       <label class="title">Itens em falta/problemas <span class="required">*</span></label>
       <div class="checkbox-columns">
         <div class="column">
-          <label><input type="checkbox" name="problemas" value="papel-higienico"> Papel higiênico</label>
-          <label><input type="checkbox" name="problemas" value="papel-toalha"> Papel toalha</label>
-          <label><input type="checkbox" name="problemas" value="sabonete"> Sabonete de mão</label>
+          <label><input formControlName="papelHigienico" type="checkbox" name="problemas" value="papel-higienico"> Papel higiênico</label>
+          <label><input formControlName="papelToalha"  type="checkbox" name="problemas" value="papel-toalha"> Papel toalha</label>
+          <label><input formControlName="sabonete"  type="checkbox" name="problemas" value="sabonete"> Sabonete de mão</label>
         </div>
         <div class="column">
-          <label><input type="checkbox" name="problemas" value="banheiro-sujo"> Banheiro sujo</label>
-          <label><input type="checkbox" name="problemas" value="lixeira"> Lixeira cheia</label>
-          <label><input type="checkbox" name="problemas" value="outros"> Outros problemas (Descreva abaixo)</label>
+          <label><input formControlName="banheiroSujo" type="checkbox" name="problemas" value="banheiro-sujo"> Banheiro sujo</label>
+          <label><input formControlName="lixeira" type="checkbox" name="problemas" value="lixeira"> Lixeira cheia</label>
+          <label><input formControlName="outros" type="checkbox" name="problemas" value="outros"> Outros problemas (Descreva abaixo)</label>
         </div>
       </div>
+      <small class="erro">
+        @if (problems?.invalid && problems?.touched) {
+          Pelo menos um problema deve ser marcado.
+        }
+      </small>
     </div>
 
     <div class="form-item">
       <label for="obs">Observações adicionais</label>
-      <textarea id="obs" placeholder="Descreva aqui quaisquer problemas ou informações adicionais..." rows="5"></textarea>
+      <textarea id="obs" placeholder="Descreva aqui quaisquer problemas ou informações adicionais..."
+        rows="5"></textarea>
     </div>
 
     <button type="submit" class="submit-btn">Enviar Solicitação</button>

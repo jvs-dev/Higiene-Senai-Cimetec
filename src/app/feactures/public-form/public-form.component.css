@@ -146,6 +146,12 @@ input[type=number]::-webkit-outer-spin-button {
   background-color: var(--color-b2);
 }
 
+.erro{
+  color: red;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
 @media (max-width: 600px) {
   .form-row,
   .checkbox-columns {
