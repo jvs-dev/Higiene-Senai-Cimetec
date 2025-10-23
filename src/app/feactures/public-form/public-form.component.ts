@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -8,7 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { BannerComponent } from '../../shared/banner/banner.component';
+import { BannerComponent } from '../../shared/components/banner/banner.component';
+import { ModalService } from '../../core/services/modal/modal.service';
 
 @Component({
   selector: 'app-public-form',
@@ -17,8 +18,13 @@ import { BannerComponent } from '../../shared/banner/banner.component';
   styleUrl: './public-form.component.css',
 })
 export class PublicFormComponent {
+  modalOpen: boolean = false;
   publicForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private modalService: ModalService,
+
+  ) {
     this.publicForm = this.fb.group({
       userRa: this.fb.control('', {
         validators: [Validators.required, Validators.pattern(/^\d{3}\.\d{6}$/)],
@@ -37,6 +43,13 @@ export class PublicFormComponent {
         { validators: this.checboxOneChekdad }
       ),
     });
+  }
+
+  ngOnInit(): void {
+    this.modalService.modal$.subscribe((open) => {
+      this.modalOpen = open;
+    })
+    
   }
 
   get userRa(): FormControl | null {
@@ -65,7 +78,9 @@ export class PublicFormComponent {
       console.log('o campo esta invalido');
       return;
     }
-
-    console.log('Enviado com sucesso');
+    
+    this.modalOpen = false
+    this.modalService.openModal();
+    console.log("enviado com successo")
   }
 }

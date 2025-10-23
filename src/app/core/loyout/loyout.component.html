@@ -1,4 +1,9 @@
-<app-header></app-header>
-<main class="main-content">
-  <router-outlet></router-outlet>
-</main>
+<div class="wrapper">
+  @if (modalOpen) {
+    <app-modal-sucess></app-modal-sucess>
+  }
+  <app-header></app-header>
+  <main class="main-content">
+    <router-outlet ></router-outlet>
+  </main>
+</div>
