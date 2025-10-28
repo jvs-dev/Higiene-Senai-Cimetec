@@ -42,6 +42,10 @@
     <section class="tasks-section">
       <h2>Tarefas {{ activeFilter }}</h2>
       
+      <div *ngIf="error" class="error-message">
+        <p>{{ error }}</p>
+      </div>
+      
       <div class="tasks-list" *ngIf="tasks$ | async as tasks; else loading">
         <div class="task-item" *ngFor="let task of tasks">
           <div class="task-header">
@@ -84,7 +88,7 @@
           </div>
         </div>
         
-        <div *ngIf="tasks.length === 0" class="no-tasks">
+        <div *ngIf="tasks.length === 0 && !error" class="no-tasks">
           <p>Nenhuma tarefa encontrada.</p>
         </div>
       </div>

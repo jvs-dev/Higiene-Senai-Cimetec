@@ -24,6 +24,7 @@ interface Task {
 export class DashboardComponent implements OnInit {
   activeFilter = 'Todas';
   tasks$: Observable<Task[]> | undefined;
+  error: string | null = null;
   
   taskFilters = [
     { label: 'Todas', value: 'Todas' },
@@ -44,6 +45,8 @@ export class DashboardComponent implements OnInit {
   }
 
   loadTasks() {
+    this.error = null;
+    
     if (this.activeFilter === 'Todas') {
       this.tasks$ = this.firebaseService.getTasks();
     } else {
@@ -71,10 +74,13 @@ export class DashboardComponent implements OnInit {
     // In a real application, you would determine the next status based on business logic
     this.firebaseService.updateTaskStatus(taskId, newStatus).then(() => {
       console.log(`Task ${taskId} status updated to ${newStatus}`);
+      // Show success message
+      alert('Status da tarefa atualizado com sucesso!');
       // Reload tasks to reflect the change
       this.loadTasks();
     }).catch(error => {
       console.error('Error updating task status:', error);
+      this.error = 'Erro ao atualizar status da tarefa.';
       alert('Erro ao atualizar status da tarefa.');
     });
   }

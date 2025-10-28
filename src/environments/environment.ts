@@ -1,11 +1,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAv4L9vCX4mRkX1Ly12LJyf-J3LND1nxjU",
+    authDomain: "sanittrack.firebaseapp.com",
+    projectId: "sanittrack",
+    storageBucket: "sanittrack.firebasestorage.app",
+    messagingSenderId: "428022424629",
+    appId: "1:428022424629:web:6572e39ce135922feafd7c"
   }
 };
