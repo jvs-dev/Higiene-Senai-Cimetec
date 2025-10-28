@@ -67,11 +67,16 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  updateTaskStatus(taskId: string) {
-    // Determine the new status based on current status
-    let newStatus = 'Resolvida'; // Default to resolved
+  refreshTasks() {
+    this.loadTasks();
+  }
+
+  updateTaskStatus(taskId: string, event: any) {
+    const newStatus = event.target.value;
     
-    // In a real application, you would determine the next status based on business logic
+    // Don't update if the status is the same
+    // We would need to get the current task to check this, so we'll just proceed with the update
+    
     this.firebaseService.updateTaskStatus(taskId, newStatus).then(() => {
       console.log(`Task ${taskId} status updated to ${newStatus}`);
       // Show success message

@@ -12,6 +12,9 @@
           (click)="setActiveFilter(filter.value)">
           {{ filter.label }}
         </button>
+        <button class="refresh-btn" (click)="refreshTasks()">
+          <i class="fa-solid fa-refresh"></i> Atualizar
+        </button>
       </div>
     </div>
   </header>
@@ -49,7 +52,7 @@
       <div class="tasks-list" *ngIf="tasks$ | async as tasks; else loading">
         <div class="task-item" *ngFor="let task of tasks">
           <div class="task-header">
-            <h4>{{ task.title || 'Tarefa sem título' }}</h4>
+            <h4>{{ task.title || 'Tarefa de Limpeza' }}</h4>
             <span class="task-status" [ngClass]="{
               'pending': task.status === 'Pendente',
               'in-progress': task.status === 'Em Andamento',
@@ -73,8 +76,8 @@
               <span class="value">{{ task.dateTime || 'Não informado' }}</span>
             </div>
             
-            <div class="task-tags">
-              <span class="tag" *ngFor="let tag of (task.tags || [])">{{ tag }}</span>
+            <div class="task-tags" *ngIf="task.tags && task.tags.length > 0">
+              <span class="tag" *ngFor="let tag of task.tags">{{ tag }}</span>
             </div>
             
             <div class="task-row">
@@ -84,7 +87,18 @@
           </div>
           
           <div class="task-footer">
-            <button class="action-btn update-status" (click)="updateTaskStatus(task.id)">Atualizar Status</button>
+            <div class="status-update">
+              <label for="status-select-{{task.id}}">Atualizar Status:</label>
+              <select 
+                id="status-select-{{task.id}}" 
+                class="status-select"
+                (change)="updateTaskStatus(task.id, $event)"
+                [value]="task.status">
+                <option value="Pendente">Pendente</option>
+                <option value="Em Andamento">Em Andamento</option>
+                <option value="Resolvida">Resolvido</option>
+              </select>
+            </div>
           </div>
         </div>
         

@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, query, where, doc, updateDoc, getDoc } from 'firebase/firestore';
 import { Observable, from, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { catchError, map, finalize } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,8 @@ export class FirebaseService {
       return from(getDocs(tasksQuery)).pipe(
         map(querySnapshot => {
           const tasks = querySnapshot.docs.map(doc => {
-            return { id: doc.id, ...doc.data() };
+            const data = doc.data();
+            return this.mapFirebaseDataToTask(doc.id, data);
           });
           console.log('Fetched tasks:', tasks); // Debug log
           return tasks;
@@ -51,7 +52,8 @@ export class FirebaseService {
       return from(getDocs(tasksQuery)).pipe(
         map(querySnapshot => {
           const tasks = querySnapshot.docs.map(doc => {
-            return { id: doc.id, ...doc.data() };
+            const data = doc.data();
+            return this.mapFirebaseDataToTask(doc.id, data);
           });
           console.log(`Fetched tasks with status ${status}:`, tasks); // Debug log
           return tasks;
@@ -85,7 +87,8 @@ export class FirebaseService {
       return from(getDoc(taskDoc)).pipe(
         map(docSnapshot => {
           if (docSnapshot.exists()) {
-            const task = { id: docSnapshot.id, ...docSnapshot.data() };
+            const data = docSnapshot.data();
+            const task = this.mapFirebaseDataToTask(docSnapshot.id, data);
             console.log(`Fetched task with ID ${taskId}:`, task); // Debug log
             return task;
           } else {
@@ -101,5 +104,44 @@ export class FirebaseService {
       console.error('Error initializing task by ID query:', error);
       throw error;
     }
+  }
+
+  // Map Firebase data structure to our Task interface
+  private mapFirebaseDataToTask(id: string, data: any): any {
+    // Extract problems tags
+    const tags: string[] = [];
+    if (data.problems) {
+      if (data.problems.papelHigienico) tags.push('Papel Higiênico');
+      if (data.problems.papelToalha) tags.push('Papel Toalha');
+      if (data.problems.sabonete) tags.push('Sabonete');
+      if (data.problems.lixeira) tags.push('Lixeira');
+      if (data.problems.banheiroSujo) tags.push('Banheiro Sujo');
+      if (data.problems.outros) tags.push('Outros');
+    }
+
+    // Format timestamp
+    let dateTime = 'Não informado';
+    if (data.timestamp) {
+      // Convert Firebase timestamp to readable format
+      if (data.timestamp.toDate) {
+        const date = data.timestamp.toDate();
+        dateTime = date.toLocaleString('pt-BR');
+      } else if (typeof data.timestamp === 'string') {
+        dateTime = data.timestamp;
+      }
+    }
+
+    return {
+      id: id,
+      title: 'Tarefa de Limpeza', // Default title
+      status: data.status || 'Sem status',
+      ra: data.userRa || 'Não informado',
+      location: data.andarPredio && data.banheiro ? 
+        `${data.andarPredio}, Banheiro ${data.banheiro}` : 
+        (data.andarPredio || data.banheiro || 'Não informado'),
+      dateTime: dateTime,
+      tags: tags,
+      observation: 'Nenhuma observação' // Default observation
+    };
   }
 }
