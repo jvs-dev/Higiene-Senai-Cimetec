@@ -167,14 +167,32 @@
    gap: 10px;
 }
 
+.task-row.row-obs {
+   background: #F8FAFC;
+   border: solid 1px #DAE0E7;
+   color: #5C708A;
+   padding: 12px;
+   border-radius: 6px;
+   gap: 5px;
+}
+
 .label {
    font-weight: bold;
    color: #555;
    min-width: 100px;
 }
 
+.row-obs .label {
+   min-width: 0px;
+   color: #5C708A;
+}
+
 .value {
    color: #333;
+}
+
+.row-obs .value {
+   color: #2a3b50;
 }
 
 .task-tags {
@@ -187,17 +205,15 @@
 .task-row i {
    color: #F61414;
    font-size: 20px;
-   margin: 0px 5px 0px 0px;
 }
 
 .tag {
-   background-color: #e9ecef;
-   color: #000;
    font-weight: 600;
-   padding: 4px 8px;
-   border-radius: 4px;
-   font-size: 12px;
-   letter-spacing: 1px;
+   color: #000;
+   border: solid 2px #DAE0E7;
+   padding: 4px 12px;
+   border-radius: 100px;
+   font-size: 13px;
 }
 
 .task-footer {
