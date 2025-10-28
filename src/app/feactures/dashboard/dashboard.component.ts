@@ -14,6 +14,13 @@ interface Task {
   observation: string;
 }
 
+interface TaskStats {
+  pending: number;
+  inProgress: number;
+  resolved: number;
+  total: number;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -24,6 +31,7 @@ interface Task {
 export class DashboardComponent implements OnInit {
   activeFilter = 'Todas';
   tasks$: Observable<Task[]> | undefined;
+  stats: TaskStats = { pending: 0, inProgress: 0, resolved: 0, total: 0 };
   error: string | null = null;
   
   taskFilters = [
@@ -37,6 +45,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.loadTasks();
+    this.loadStats();
   }
 
   setActiveFilter(filter: string) {
@@ -67,22 +76,57 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  loadStats() {
+    // Fetch all tasks and calculate stats
+    this.firebaseService.getTasks().subscribe(
+      tasks => {
+        let pending = 0;
+        let inProgress = 0;
+        let resolved = 0;
+        
+        tasks.forEach(task => {
+          switch (task.status) {
+            case 'Pendente':
+              pending++;
+              break;
+            case 'Em Andamento':
+              inProgress++;
+              break;
+            case 'Resolvida':
+              resolved++;
+              break;
+          }
+        });
+        
+        this.stats = {
+          pending: pending,
+          inProgress: inProgress,
+          resolved: resolved,
+          total: tasks.length
+        };
+      },
+      error => {
+        console.error('Error loading stats:', error);
+        this.error = 'Erro ao carregar estatísticas.';
+      }
+    );
+  }
+
   refreshTasks() {
     this.loadTasks();
+    this.loadStats();
   }
 
   updateTaskStatus(taskId: string, event: any) {
     const newStatus = event.target.value;
     
-    // Don't update if the status is the same
-    // We would need to get the current task to check this, so we'll just proceed with the update
-    
     this.firebaseService.updateTaskStatus(taskId, newStatus).then(() => {
       console.log(`Task ${taskId} status updated to ${newStatus}`);
       // Show success message
       alert('Status da tarefa atualizado com sucesso!');
-      // Reload tasks to reflect the change
+      // Reload tasks and stats to reflect the change
       this.loadTasks();
+      this.loadStats();
     }).catch(error => {
       console.error('Error updating task status:', error);
       this.error = 'Erro ao atualizar status da tarefa.';
