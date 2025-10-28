@@ -1,1 +1,99 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Painel de Controle</h1>
+    
+    <div class="filter-section">
+      <h2>Filtrar Tarefas</h2>
+      <div class="filter-buttons">
+        <button 
+          *ngFor="let filter of taskFilters"
+          class="filter-btn"
+          [class.active]="activeFilter === filter.value"
+          (click)="setActiveFilter(filter.value)">
+          {{ filter.label }}
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="dashboard-content">
+    <section class="stats-section">
+      <div class="stat-card">
+        <h3>Tarefas Pendentes</h3>
+        <p class="stat-number">12</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Em Andamento</h3>
+        <p class="stat-number">8</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Resolvidas</h3>
+        <p class="stat-number">24</p>
+      </div>
+      
+      <div class="stat-card">
+        <h3>Total</h3>
+        <p class="stat-number">44</p>
+      </div>
+    </section>
+
+    <section class="tasks-section">
+      <h2>Tarefas {{ activeFilter }}</h2>
+      
+      <div class="tasks-list" *ngIf="tasks$ | async as tasks; else loading">
+        <div class="task-item" *ngFor="let task of tasks">
+          <div class="task-header">
+            <h4>{{ task.title || 'Tarefa sem título' }}</h4>
+            <span class="task-status" [ngClass]="{
+              'pending': task.status === 'Pendente',
+              'in-progress': task.status === 'Em Andamento',
+              'completed': task.status === 'Resolvida'
+            }">{{ task.status || 'Sem status' }}</span>
+          </div>
+          
+          <div class="task-details">
+            <div class="task-row">
+              <span class="label">RA:</span>
+              <span class="value">{{ task.ra || 'Não informado' }}</span>
+            </div>
+            
+            <div class="task-row">
+              <span class="label">Localização:</span>
+              <span class="value">{{ task.location || 'Não informado' }}</span>
+            </div>
+            
+            <div class="task-row">
+              <span class="label">Data/Hora:</span>
+              <span class="value">{{ task.dateTime || 'Não informado' }}</span>
+            </div>
+            
+            <div class="task-tags">
+              <span class="tag" *ngFor="let tag of (task.tags || [])">{{ tag }}</span>
+            </div>
+            
+            <div class="task-row">
+              <span class="label">Observação:</span>
+              <span class="value">{{ task.observation || 'Nenhuma observação' }}</span>
+            </div>
+          </div>
+          
+          <div class="task-footer">
+            <button class="action-btn update-status" (click)="updateTaskStatus(task.id)">Atualizar Status</button>
+          </div>
+        </div>
+        
+        <div *ngIf="tasks.length === 0" class="no-tasks">
+          <p>Nenhuma tarefa encontrada.</p>
+        </div>
+      </div>
+      
+      <ng-template #loading>
+        <div class="loading">
+          <p>Carregando tarefas...</p>
+        </div>
+      </ng-template>
+    </section>
+  </main>
+</div>

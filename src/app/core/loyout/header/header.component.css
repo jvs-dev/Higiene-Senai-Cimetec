@@ -1,64 +1,76 @@
 .header-container {
-  background-color: var(--color-b1);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 6rem;
-  width: 100%;
-  padding-inline: 2rem;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-bottom: solid 2px var(--primary-color);
+  margin-bottom: 20px;
 }
 
-.header-logo img {
-  height: 60px; 
-  display: block; 
-}
-
-.header-login-btn {
+.header-logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem; 
-  background-color: transparent;
-  border: 2px solid var(--w3);
-  color: var(--w1);
-  padding: 0.8rem 1rem;
-  border-radius: 6px; 
+}
+
+.logo-img {
+  height: 50px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.header-login-btn,
+.header-dashboard-btn,
+.header-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
   cursor: pointer;
-  text-decoration: none; 
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-}
-.header-login-btn i{
-  font-size: 1rem;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
 }
 
-.header-login-btn:hover {
-  background-color: var(--w1);  
-  color: var(--color-b1);
+.header-login-btn,
+.header-dashboard-btn {
+  background-color: #007bff;
+  color: white;
 }
 
+.header-login-btn:hover,
+.header-dashboard-btn:hover {
+  background-color: #0069d9;
+}
 
-@media (max-width: 600px) {
+.header-logout-btn {
+  background-color: #dc3545;
+  color: white;
+}
 
-  .header-container {
-    padding-inline: 1rem; 
+.header-logout-btn:hover {
+  background-color: #c82333;
+}
+
+.login-text,
+.dashboard-text,
+.logout-text {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .login-text,
+  .dashboard-text,
+  .logout-text {
+    display: inline;
   }
-
-  .header-logo img {
-    height: 48px;      
-  }
-
-  .header-login-btn .login-text {
-    display: none;
-  }
-
-  .header-login-btn {
-    gap: 0;            
-    padding: 0.6rem 0.8rem; 
-  }
-
-  .header-login-btn .fa-user {
-    font-size: 1.1rem;
-  }
-
 }

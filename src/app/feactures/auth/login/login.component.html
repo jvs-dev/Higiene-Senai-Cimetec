@@ -8,19 +8,19 @@
       <img src="/assets/logo.png" alt="">
     </div>
 
-    <form action="" class="form-login">
+    <form (ngSubmit)="login()" class="form-login">
       <div class="form-item">
         <label for="email">Email</label>
-        <input type="email">
+        <input type="email" id="email" [(ngModel)]="username" name="username" required>
       </div>
 
       <div class="form-item">
         <label for="senha">Senha</label>
-        <input type="password">
+        <input type="password" id="senha" [(ngModel)]="password" name="password" required>
       </div>
 
       <div class="form-btn-group">
-        <button routerLink="/" type="submit" class="login-btn">Entrar</button>
+        <button type="submit" class="login-btn">Entrar</button>
         <a routerLink="" class="forgot-password">Esqueci a senha</a>
       </div>
     </form>

@@ -82,5 +82,20 @@ export class PublicFormComponent {
     this.modalOpen = false
     this.modalService.openModal();
     console.log("enviado com successo")
+    
+    // Clear the form after submission
+    this.publicForm.reset({
+      userRa: '',
+      andarPredio: '',
+      banheiro: '',
+      problems: {
+        papelHigienico: false,
+        papelToalha: false,
+        sabonete: false,
+        banheiroSujo: false,
+        lixeira: false,
+        outros: false
+      }
+    });
   }
 }

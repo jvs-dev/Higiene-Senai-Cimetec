@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { ModalService } from '../../../core/services/modal/modal.service';
 
 @Component({
   selector: 'app-modal-sucess',
+  standalone: true,
   imports: [],
   templateUrl: './modal-sucess.component.html',
   styleUrl: './modal-sucess.component.css'
