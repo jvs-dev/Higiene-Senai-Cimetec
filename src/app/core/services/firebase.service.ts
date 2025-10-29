@@ -126,48 +126,6 @@ export class FirebaseService {
     }
   }
 
-  // Send push notification to staff members
-  async sendPushNotification(taskData: any): Promise<void> {
-    try {
-      // Prepare notification data
-      const notificationData = {
-        title: 'Nova Solicitação de Limpeza',
-        body: `Nova solicitação em ${taskData.andarPredio}, banheiro ${taskData.banheiro}`,
-        taskId: 'new-task', // This would be the actual task ID in a real implementation
-        timestamp: new Date().toISOString(),
-        data: {
-          userRa: taskData.userRa,
-          andarPredio: taskData.andarPredio,
-          banheiro: taskData.banheiro,
-          problems: taskData.problems
-        }
-      };
-
-      // In a production environment, you would send this to your backend
-      // which would then use the FCM Admin SDK to send the notification
-      // For now, we'll simulate this by storing in localStorage
-      const notifications = JSON.parse(localStorage.getItem('pendingNotifications') || '[]');
-      notifications.push(notificationData);
-      localStorage.setItem('pendingNotifications', JSON.stringify(notifications));
-      
-      console.log('Notification queued for sending:', notificationData);
-      
-      // Simulate sending to backend
-      // In a real implementation, you would do something like:
-      // await fetch('/api/send-notification', {
-      //   method: 'POST',
-      //   headers: { 
-      //     'Content-Type': 'application/json',
-      //     'Authorization': 'Bearer ' + authToken
-      //   },
-      //   body: JSON.stringify(notificationData)
-      // });
-    } catch (error) {
-      console.error('Error sending push notification:', error);
-      throw error;
-    }
-  }
-
   // Map Firebase data structure to our Task interface
   private mapFirebaseDataToTask(id: string, data: any): any {
     // Extract problems tags

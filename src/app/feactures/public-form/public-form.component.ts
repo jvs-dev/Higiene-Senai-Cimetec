@@ -92,9 +92,7 @@ export class PublicFormComponent {
       const docRef = await this.firebaseService.addTask(this.publicForm.value);
       console.log("Dados enviados com sucesso para o Firebase", docRef);
       
-      // Send push notification to staff members
-      await this.firebaseService.sendPushNotification(this.publicForm.value);
-      console.log("Notificação enviada com sucesso");
+      // Removed push notification call as it's no longer needed
       
       // Open modal only after successful submission
       this.modalService.openModal();
