@@ -1,9 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter+Display:wght@400;600;700&display=swap');
-
-
-
 :root {
     --color-background: #f3f6fb;
     --color-b1: #0874F7;
@@ -26,7 +22,7 @@
     --g3: #B4C4D9;
     --g4: #D8E4F3;
 
-    --font-primary: 'InterDisplay', Helvetica, Arial, sans-serif;
+    --font-primary: 'Inter', Helvetica, Arial, sans-serif;
 }
 
 *,
@@ -40,7 +36,6 @@
 li {
     list-style: none;
 }
-
 
 input,
 select,
@@ -95,5 +90,3 @@ body {
     min-height: 100vh;
     background-color: var(--color-background);
 }
- 
-
