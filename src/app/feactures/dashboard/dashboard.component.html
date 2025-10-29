@@ -5,10 +5,12 @@
     <div class="filter-section">
       <h2>Filtrar Tarefas</h2>
       <div class="filter-buttons">
-        <button *ngFor="let filter of taskFilters" class="filter-btn" [class.active]="activeFilter === filter.value"
-          (click)="setActiveFilter(filter.value)">
-          {{ filter.label }}
-        </button>
+        @for (filter of taskFilters; track filter.value) {
+          <button class="filter-btn" [class.active]="activeFilter === filter.value"
+            (click)="setActiveFilter(filter.value)">
+            {{ filter.label }}
+          </button>
+        }
         <button class="refresh-btn" (click)="refreshTasks()">
           <i class="fa-solid fa-refresh"></i> Atualizar
         </button>
@@ -42,75 +44,85 @@
     <section class="tasks-section">
       <h2>Tarefas {{ activeFilter }}</h2>
 
-      <div *ngIf="error" class="error-message">
-        <p>{{ error }}</p>
-      </div>
-
-      <div class="tasks-list" *ngIf="tasks$ | async as tasks; else loading">
-        <div class="task-item" *ngFor="let task of tasks">
-          <div class="task-header">
-            <h4>{{ task.title || 'Tarefa de Limpeza' }}</h4>
-            <span class="task-status" [ngClass]="{
-               'pending': task.status === 'Pendente',
-               'in-progress': task.status === 'Em Andamento',
-               'completed': task.status === 'Resolvida'
-             }">{{ task.status || 'Sem status' }}</span>
-          </div>
-
-          <div class="task-details">
-            <div class="task-row">
-              <span class="label">RA:</span>
-              <span class="value">{{ task.ra || 'Não informado' }}</span>
-            </div>
-
-            <div class="task-row">
-              <span class="label">Localização:</span>
-              <span class="value">{{ task.location || 'Não informado' }}</span>
-            </div>
-
-            <div class="task-row">
-              <span class="label">Data/Hora:</span>
-              <span class="value">{{ task.dateTime || 'Não informado' }}</span>
-            </div>
-            <div>
-              <div class="task-row">
-                <i class="bi bi-exclamation-diamond"></i>
-                <span class="label">Itens Faltando:</span>
-              </div>
-              <div class="task-tags" *ngIf="task.tags && task.tags.length > 0">
-                <span class="tag" *ngFor="let tag of task.tags">{{ tag }}</span>
-              </div>
-            </div>
-
-            <div class="task-row row-obs">
-              <span class="label">Obs:</span>
-              <span class="value">{{ task.observation || 'Nenhuma observação' }}</span>
-            </div>
-          </div>
-
-          <div class="task-footer">
-            <div class="status-update">
-              <label for="status-select-{{task.id}}">Atualizar Status:</label>
-              <select id="status-select-{{task.id}}" class="status-select"
-                (change)="updateTaskStatus(task.id, $event)" [value]="task.status">
-                <option value="Pendente">Pendente</option>
-                <option value="Em Andamento">Em Andamento</option>
-                <option value="Resolvida">Resolvido</option>
-              </select>
-            </div>
-          </div>
+      @if (error) {
+        <div class="error-message">
+          <p>{{ error }}</p>
         </div>
+      }
 
-        <div *ngIf="tasks.length === 0 && !error" class="no-tasks">
-          <p>Nenhuma tarefa encontrada.</p>
+      @if (tasks$ | async; as tasks) {
+        <div class="tasks-list">
+          @for (task of tasks; track task.id) {
+            <div class="task-item">
+              <div class="task-header">
+                <h4>{{ task.title || 'Tarefa de Limpeza' }}</h4>
+                <span class="task-status" [ngClass]="{
+                   'pending': task.status === 'Pendente',
+                   'in-progress': task.status === 'Em Andamento',
+                   'completed': task.status === 'Resolvida'
+                 }">{{ task.status || 'Sem status' }}</span>
+              </div>
+
+              <div class="task-details">
+                <div class="task-row">
+                  <span class="label">RA:</span>
+                  <span class="value">{{ task.ra || 'Não informado' }}</span>
+                </div>
+
+                <div class="task-row">
+                  <span class="label">Localização:</span>
+                  <span class="value">{{ task.location || 'Não informado' }}</span>
+                </div>
+
+                <div class="task-row">
+                  <span class="label">Data/Hora:</span>
+                  <span class="value">{{ task.dateTime || 'Não informado' }}</span>
+                </div>
+                <div>
+                  <div class="task-row">
+                    <i class="bi bi-exclamation-diamond"></i>
+                    <span class="label">Itens Faltando:</span>
+                  </div>
+                  @if (task.tags && task.tags.length > 0) {
+                    <div class="task-tags">
+                      @for (tag of task.tags; track tag) {
+                        <span class="tag">{{ tag }}</span>
+                      }
+                    </div>
+                  }
+                </div>
+
+                <div class="task-row row-obs">
+                  <span class="label">Obs:</span>
+                  <span class="value">{{ task.observation || 'Nenhuma observação' }}</span>
+                </div>
+              </div>
+
+              <div class="task-footer">
+                <div class="status-update">
+                  <label for="status-select-{{task.id}}">Atualizar Status:</label>
+                  <select id="status-select-{{task.id}}" class="status-select"
+                    (change)="updateTaskStatus(task.id, $event)" [value]="task.status">
+                    <option value="Pendente">Pendente</option>
+                    <option value="Em Andamento">Em Andamento</option>
+                    <option value="Resolvida">Resolvido</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          }
+
+          @if (tasks.length === 0 && !error) {
+            <div class="no-tasks">
+              <p>Nenhuma tarefa encontrada.</p>
+            </div>
+          }
         </div>
-      </div>
-
-      <ng-template #loading>
+      } @else {
         <div class="loading">
           <p>Carregando tarefas...</p>
         </div>
-      </ng-template>
+      }
     </section>
   </main>
 </div>

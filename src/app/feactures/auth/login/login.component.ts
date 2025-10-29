@@ -13,15 +13,25 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
   username: string = '';
   password: string = '';
+  isLoading: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
-  login() {
-    if (this.authService.login(this.username, this.password)) {
-      this.router.navigate(['/dashboard']);
-    } else {
-      // Handle login error (in a real app, show error message)
-      alert('Login failed. Please check your credentials.');
+  async login() {
+    this.isLoading = true;
+    try {
+      const success = await this.authService.login(this.username, this.password);
+      if (success) {
+        this.router.navigate(['/dashboard']);
+      } else {
+        // Handle login error (in a real app, show error message)
+        alert('Login failed. Please check your credentials.');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred during login. Please try again.');
+    } finally {
+      this.isLoading = false;
     }
   }
 }

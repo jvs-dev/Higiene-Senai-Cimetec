@@ -20,7 +20,13 @@
       </div>
 
       <div class="form-btn-group">
-        <button type="submit" class="login-btn">Entrar</button>
+        <button type="submit" class="login-btn" [disabled]="isLoading">
+          @if (isLoading) {
+            <span>Entrando...</span>
+          } @else {
+            <span>Entrar</span>
+          }
+        </button>
         <a routerLink="" class="forgot-password">Esqueci a senha</a>
       </div>
     </form>

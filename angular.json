@@ -61,12 +61,19 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "host": "0.0.0.0"
+          },
           "configurations": {
             "production": {
               "buildTarget": "higieneCimatec:build:production"
             },
             "development": {
               "buildTarget": "higieneCimatec:build:development"
+            },
+            "external": {
+              "host": "0.0.0.0",
+              "port": 4200
             }
           },
           "defaultConfiguration": "development"

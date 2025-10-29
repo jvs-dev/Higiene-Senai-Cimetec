@@ -82,6 +82,11 @@
   cursor: pointer;
 }
 
+.form-btn-group button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
 .forgot-password {
   position: absolute;
   right: 0;

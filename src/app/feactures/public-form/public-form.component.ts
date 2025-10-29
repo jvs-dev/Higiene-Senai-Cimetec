@@ -76,7 +76,7 @@ export class PublicFormComponent {
     return temMarcado ? null : { nenhumMarcado: true };
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.publicForm.invalid) {
       this.publicForm.markAllAsTouched();
       console.log('o campo esta invalido');
@@ -87,37 +87,38 @@ export class PublicFormComponent {
     this.isLoading = true;
     this.submitError = '';
 
-    // Send data to Firebase
-    this.firebaseService.addTask(this.publicForm.value)
-      .then(() => {
-        console.log("Dados enviados com sucesso para o Firebase");
-        this.submitSuccess = true;
-        
-        // Open modal only after successful submission
-        this.modalService.openModal();
-        
-        // Clear the form after successful submission
-        this.publicForm.reset({
-          userRa: '',
-          andarPredio: '',
-          banheiro: '',
-          problems: {
-            papelHigienico: false,
-            papelToalha: false,
-            sabonete: false,
-            banheiroSujo: false,
-            lixeira: false,
-            outros: false
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar dados para o Firebase:", error);
-        this.submitError = 'Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.';
-      })
-      .finally(() => {
-        // Reset loading state
-        this.isLoading = false;
+    try {
+      // Send data to Firebase
+      const docRef = await this.firebaseService.addTask(this.publicForm.value);
+      console.log("Dados enviados com sucesso para o Firebase", docRef);
+      
+      // Send push notification to staff members
+      await this.firebaseService.sendPushNotification(this.publicForm.value);
+      console.log("Notificação enviada com sucesso");
+      
+      // Open modal only after successful submission
+      this.modalService.openModal();
+      
+      // Clear the form after successful submission
+      this.publicForm.reset({
+        userRa: '',
+        andarPredio: '',
+        banheiro: '',
+        problems: {
+          papelHigienico: false,
+          papelToalha: false,
+          sabonete: false,
+          banheiroSujo: false,
+          lixeira: false,
+          outros: false
+        }
       });
+    } catch (error) {
+      console.error("Erro ao enviar dados para o Firebase:", error);
+      this.submitError = 'Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.';
+    } finally {
+      // Reset loading state
+      this.isLoading = false;
+    }
   }
 }

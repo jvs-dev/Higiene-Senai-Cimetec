@@ -4,12 +4,14 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 import { FirebaseService } from './core/services/firebase.service';
+import { PushNotificationService } from './core/services/push-notification.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
-    FirebaseService
+    FirebaseService,
+    PushNotificationService
   ]
 };

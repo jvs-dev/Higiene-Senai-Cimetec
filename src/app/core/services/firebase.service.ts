@@ -115,7 +115,7 @@ export class FirebaseService {
         andarPredio: taskData.andarPredio,
         banheiro: taskData.banheiro,
         problems: taskData.problems,
-        status: 'pending', // Default status for new requests
+        status: 'Pendente', // Default status for new requests
         timestamp: new Date()
       };
       
@@ -123,6 +123,38 @@ export class FirebaseService {
     } catch (error) {
       console.error('Error adding task to Firestore:', error);
       return Promise.reject(new Error('Failed to add task to Firestore'));
+    }
+  }
+
+  // Send push notification to staff members
+  async sendPushNotification(taskData: any): Promise<void> {
+    try {
+      // In a real implementation, this would call your backend API
+      // which would then use the FCM HTTP API to send notifications
+      console.log('Would send push notification for new task:', taskData);
+      
+      // Example of what the notification data might look like:
+      const notificationData = {
+        title: 'Nova Solicitação de Limpeza',
+        body: `Nova solicitação em ${taskData.andarPredio}, banheiro ${taskData.banheiro}`,
+        taskId: 'generated-task-id', // This would be the actual task ID
+        timestamp: new Date().toISOString()
+      };
+      
+      // This is where you would typically make an HTTP request to your backend
+      // to send the push notification via FCM
+      // Example:
+      // await fetch('/api/send-notification', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(notificationData)
+      // });
+      
+      // For now, we'll just log it
+      console.log('Notification data:', notificationData);
+    } catch (error) {
+      console.error('Error sending push notification:', error);
+      throw error;
     }
   }
 

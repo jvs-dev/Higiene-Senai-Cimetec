@@ -6,6 +6,7 @@ export const environment = {
     projectId: "sanittrack",
     storageBucket: "sanittrack.firebasestorage.app",
     messagingSenderId: "428022424629",
-    appId: "1:428022424629:web:6572e39ce135922feafd7c"
+    appId: "1:428022424629:web:6572e39ce135922feafd7c",
+    vapidKey: "YOUR_VAPID_KEY_HERE" // Add VAPID key for FCM
   }
 };
