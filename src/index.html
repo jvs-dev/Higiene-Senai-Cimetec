@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>SanitTrack</title>
+  <title>SanitAlert</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -18,6 +18,18 @@
 
 <body>
   <app-root></app-root>
+  <script>
+    // Register the service worker for Firebase Cloud Messaging
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/firebase-messaging-sw.js')
+        .then(function(registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(function(error) {
+          console.log('Service Worker registration failed:', error);
+        });
+    }
+  </script>
 </body>
 
 </html>

@@ -10,16 +10,25 @@ export class PushNotificationService {
   private messaging: any;
 
   constructor() {
-    // Initialize Firebase App
-    const app = initializeApp(environment.firebase);
-    // Initialize Firebase Messaging
-    this.messaging = getMessaging(app);
+    try {
+      // Initialize Firebase App
+      const app = initializeApp(environment.firebase);
+      // Initialize Firebase Messaging
+      this.messaging = getMessaging(app);
+    } catch (error) {
+      console.error('Error initializing Firebase Messaging:', error);
+    }
   }
 
   // Request permission for push notifications
   requestPermission(): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
+        if (!this.messaging) {
+          reject('Firebase Messaging not initialized');
+          return;
+        }
+
         const permission = await Notification.requestPermission();
         if (permission === 'granted') {
           // Use the VAPID key from environment
@@ -28,12 +37,18 @@ export class PushNotificationService {
           const token = await getToken(this.messaging, {
             vapidKey: vapidKey
           });
-          console.log('FCM Token:', token);
-          resolve(token);
+          
+          if (token) {
+            console.log('FCM Token:', token);
+            resolve(token);
+          } else {
+            reject('No registration token available');
+          }
         } else {
           reject('Permission denied');
         }
       } catch (error) {
+        console.error('Error getting FCM token:', error);
         reject(error);
       }
     });
@@ -41,6 +56,11 @@ export class PushNotificationService {
 
   // Listen for foreground messages
   listenForMessages(): void {
+    if (!this.messaging) {
+      console.error('Firebase Messaging not initialized');
+      return;
+    }
+
     onMessage(this.messaging, (payload) => {
       console.log('Message received in foreground:', payload);
       // Customize how you want to handle foreground messages
@@ -55,11 +75,19 @@ export class PushNotificationService {
     const notificationTitle = payload.notification?.title || 'Nova notificação';
     const notificationOptions = {
       body: payload.notification?.body || 'Você tem uma nova notificação',
-      icon: payload.notification?.icon || '/assets/icons/icon-72x72.png'
+      icon: payload.notification?.icon || '/assets/icons/icon-72x72.png',
+      data: payload.data || {}
     };
 
     // Create notification
-    new Notification(notificationTitle, notificationOptions);
+    const notification = new Notification(notificationTitle, notificationOptions);
+    
+    // Handle click event
+    notification.onclick = (event) => {
+      event.preventDefault();
+      // Handle notification click - for example, navigate to dashboard
+      window.open('/dashboard', '_blank');
+    };
   }
 
   // Method to send a test notification (for development)

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { PushNotificationService } from './push-notification.service';
+import { FcmBackendService } from './fcm-backend.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,10 @@ export class AuthService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
-  constructor(private pushNotificationService: PushNotificationService) {
+  constructor(
+    private pushNotificationService: PushNotificationService,
+    private fcmBackendService: FcmBackendService
+  ) {
     // Check if user is already authenticated (e.g., from localStorage)
     const token = localStorage.getItem('authToken');
     if (token) {
@@ -26,10 +30,18 @@ export class AuthService {
       
       // Request push notification permission for staff members
       try {
-        await this.pushNotificationService.requestPermission();
+        const fcmToken = await this.pushNotificationService.requestPermission();
+        console.log('FCM Token obtained:', fcmToken);
+        
+        // Register token with backend
+        await this.fcmBackendService.registerToken(fcmToken);
+        
         // Start listening for messages
         this.pushNotificationService.listenForMessages();
         console.log('Push notifications enabled for staff member');
+        
+        // Process any pending notifications
+        await this.fcmBackendService.sendNotification({});
       } catch (error) {
         console.error('Failed to enable push notifications:', error);
       }

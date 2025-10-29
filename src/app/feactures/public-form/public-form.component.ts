@@ -21,9 +21,9 @@ import { FirebaseService } from '../../core/services/firebase.service';
 export class PublicFormComponent {
   modalOpen: boolean = false;
   publicForm: FormGroup;
-  isLoading: boolean = false; // Add loading state
-  submitSuccess: boolean = false; // Add success state
-  submitError: string = ''; // Add error state
+  isLoading: boolean = false;
+  submitSuccess: boolean = false;
+  submitError: string = '';
 
   constructor(
     private fb: FormBuilder,
