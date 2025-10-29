@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, query, where, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, query, where, doc, updateDoc, getDoc, addDoc } from 'firebase/firestore';
 import { Observable, from, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { catchError, map } from 'rxjs/operators';
@@ -103,6 +103,26 @@ export class FirebaseService {
     } catch (error) {
       console.error('Error initializing task by ID query:', error);
       throw error;
+    }
+  }
+
+  // Add a new task to Firestore
+  addTask(taskData: any): Promise<any> {
+    try {
+      const tasksCollection = collection(this.db, 'tasks');
+      const newTask = {
+        userRa: taskData.userRa,
+        andarPredio: taskData.andarPredio,
+        banheiro: taskData.banheiro,
+        problems: taskData.problems,
+        status: 'pending', // Default status for new requests
+        timestamp: new Date()
+      };
+      
+      return addDoc(tasksCollection, newTask);
+    } catch (error) {
+      console.error('Error adding task to Firestore:', error);
+      return Promise.reject(new Error('Failed to add task to Firestore'));
     }
   }
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -10,6 +10,7 @@ import {
 import { RouterModule } from '@angular/router';
 import { BannerComponent } from '../../shared/components/banner/banner.component';
 import { ModalService } from '../../core/services/modal/modal.service';
+import { FirebaseService } from '../../core/services/firebase.service';
 
 @Component({
   selector: 'app-public-form',
@@ -20,10 +21,14 @@ import { ModalService } from '../../core/services/modal/modal.service';
 export class PublicFormComponent {
   modalOpen: boolean = false;
   publicForm: FormGroup;
+  isLoading: boolean = false; // Add loading state
+  submitSuccess: boolean = false; // Add success state
+  submitError: string = ''; // Add error state
+
   constructor(
     private fb: FormBuilder,
     private modalService: ModalService,
-
+    private firebaseService: FirebaseService
   ) {
     this.publicForm = this.fb.group({
       userRa: this.fb.control('', {
@@ -49,7 +54,6 @@ export class PublicFormComponent {
     this.modalService.modal$.subscribe((open) => {
       this.modalOpen = open;
     })
-    
   }
 
   get userRa(): FormControl | null {
@@ -78,24 +82,42 @@ export class PublicFormComponent {
       console.log('o campo esta invalido');
       return;
     }
-    
-    this.modalOpen = false
-    this.modalService.openModal();
-    console.log("enviado com successo")
-    
-    // Clear the form after submission
-    this.publicForm.reset({
-      userRa: '',
-      andarPredio: '',
-      banheiro: '',
-      problems: {
-        papelHigienico: false,
-        papelToalha: false,
-        sabonete: false,
-        banheiroSujo: false,
-        lixeira: false,
-        outros: false
-      }
-    });
+
+    // Set loading state
+    this.isLoading = true;
+    this.submitError = '';
+
+    // Send data to Firebase
+    this.firebaseService.addTask(this.publicForm.value)
+      .then(() => {
+        console.log("Dados enviados com sucesso para o Firebase");
+        this.submitSuccess = true;
+        
+        // Open modal only after successful submission
+        this.modalService.openModal();
+        
+        // Clear the form after successful submission
+        this.publicForm.reset({
+          userRa: '',
+          andarPredio: '',
+          banheiro: '',
+          problems: {
+            papelHigienico: false,
+            papelToalha: false,
+            sabonete: false,
+            banheiroSujo: false,
+            lixeira: false,
+            outros: false
+          }
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao enviar dados para o Firebase:", error);
+        this.submitError = 'Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.';
+      })
+      .finally(() => {
+        // Reset loading state
+        this.isLoading = false;
+      });
   }
 }

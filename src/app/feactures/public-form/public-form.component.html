@@ -1,7 +1,13 @@
 <app-banner></app-banner>
 
-<div class="wrapper">
-  <h1>Solicitação Sanitarios Senai Cimatec</h1>
+<div class="wrapper">  
+
+  <!-- Error message display -->
+  @if (submitError) {
+    <div class="error-message">
+      {{ submitError }}
+    </div>
+  }
 
   <form [formGroup]="publicForm" (submit)="onSubmit()" class="form-user">
     <div class="form-item">
@@ -78,6 +84,13 @@
         rows="5"></textarea>
     </div>
 
-    <button type="submit" class="submit-btn">Enviar Solicitação</button>
+    <!-- Loading indicator and submit button -->
+    <button type="submit" class="submit-btn" [disabled]="isLoading">
+      @if (isLoading) {
+        <span>Enviando...</span>
+      } @else {
+        <span>Enviar Solicitação</span>
+      }
+    </button>
   </form>
 </div>

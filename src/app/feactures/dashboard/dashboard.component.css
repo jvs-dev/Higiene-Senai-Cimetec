@@ -264,13 +264,7 @@
 
    .stats-section {
       grid-template-columns: 1fr 1fr;
-   }
-
-   .task-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
-   }
+   }   
 
    .task-row {
       flex-direction: column;
